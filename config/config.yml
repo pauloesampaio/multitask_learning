@@ -71,4 +71,4 @@ model:
   early_stopping_patience: 10
   lr_reducer_factor: 0.1
   lr_reducer_patience: 5
-  min_lr: 1e-6
+  min_lr: .000001
