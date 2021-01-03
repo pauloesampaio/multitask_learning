@@ -1,12 +1,11 @@
 import os
-from datetime import datetime
 import pandas as pd
 import numpy as np
 import tensorflow as tf
 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.callbacks import EarlyStopping, TensorBoard
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from utils.model_utils import build_model
 from utils.io_utils import yaml_loader, check_if_exists
 
@@ -48,16 +47,20 @@ test_generator = image_generator.flow_from_dataframe(
 model = build_model(config)
 adam = Adam(config["model"]["learning_rate"])
 model.compile(loss="categorical_crossentropy", optimizer=adam, metrics=["accuracy"])
-early_stopping = EarlyStopping(patience=10, restore_best_weights=True)
-logdir = os.path.join("./logs", datetime.now().strftime("%Y%m%d-%H%M%S"))
-tensorboard = TensorBoard(logdir, histogram_freq=1)
 
+early_stopping = EarlyStopping(
+    patience=config["model"]["early_stopping_patience"], restore_best_weights=True
+)
+
+LR_reducer = ReduceLROnPlateau(
+    monitor="val_loss", factor=0.5, patience=5, min_lr=0.001, verbose=1
+)
 
 model.fit(
     x=train_generator,
     validation_data=test_generator,
     epochs=100,
-    callbacks=[early_stopping, tensorboard],
+    callbacks=[early_stopping, LR_reducer],
 )
 
 model_path = config["paths"]["model_path"]
