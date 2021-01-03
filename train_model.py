@@ -55,7 +55,11 @@ early_stopping = EarlyStopping(
 )
 
 LR_reducer = ReduceLROnPlateau(
-    monitor="val_loss", factor=0.1, patience=5, min_lr=1e-6, verbose=2
+    monitor="val_loss",
+    factor=config["model"]["lr_reducer_factor"],
+    patience=config["model"]["lr_reducer_patience"],
+    min_lr=config["model"]["min_lr"],
+    verbose=2,
 )
 
 model.fit(
