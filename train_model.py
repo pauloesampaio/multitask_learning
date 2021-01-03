@@ -49,11 +49,13 @@ adam = Adam(config["model"]["learning_rate"])
 model.compile(loss="categorical_crossentropy", optimizer=adam, metrics=["accuracy"])
 
 early_stopping = EarlyStopping(
-    patience=config["model"]["early_stopping_patience"], restore_best_weights=True
+    patience=config["model"]["early_stopping_patience"],
+    restore_best_weights=True,
+    verbose=2,
 )
 
 LR_reducer = ReduceLROnPlateau(
-    monitor="val_loss", factor=0.5, patience=5, min_lr=0.001, verbose=2
+    monitor="val_loss", factor=0.1, patience=5, min_lr=1e-6, verbose=2
 )
 
 model.fit(

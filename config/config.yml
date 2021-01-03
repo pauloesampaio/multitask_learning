@@ -68,4 +68,7 @@ model:
   batch_size: 32
   random_seed: 12345
   learning_rate: 0.01
-  early_stopping_patience: 5
+  early_stopping_patience: 10
+  lr_reducer_factor: 0.1
+  lr_reducer_patience: 5
+  min_lr: 1e-6
