@@ -64,7 +64,7 @@ model:
   target: ["print_encoded", "sleeves_encoded", "neckline_encoded"]
   paths: "processed_path"
   class_mode: "multi_output"
-  freeze_convolutional_layers: True
+  freeze_convolutional_layers: False
   batch_size: 32
   random_seed: 12345
   learning_rate: 0.01
