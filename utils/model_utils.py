@@ -1,25 +1,7 @@
-from PIL import Image
-import requests
-from io import BytesIO
 import numpy as np
 from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras.models import Model
 from tensorflow.keras.applications.xception import Xception, preprocess_input
-
-
-def download_image(image_url):
-    """Downloads image from an url and returns PIL image
-
-    Args:
-        image_url (str): url of the desires image
-
-    Returns:
-        PIL Image: downloaded image
-    """
-    resp = requests.get(image_url, stream=True, timeout=5)
-    im_bytes = BytesIO(resp.content)
-    image = Image.open(im_bytes)
-    return image
 
 
 def build_model(config):
