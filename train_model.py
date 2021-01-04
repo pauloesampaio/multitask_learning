@@ -6,14 +6,17 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau, CSVLogger
-from utils.model_utils import build_model
+from utils.model_utils import build_model, encode_categories
 from utils.io_utils import yaml_loader, check_if_exists
 
 config = yaml_loader("./config/config.yml")
 np.random.seed(config["model"]["random_seed"])
 tf.random.set_seed(config["model"]["random_seed"])
 
-processed_subset = pd.read_parquet(config["paths"]["processed_subset_path"])
+model_dataframe = pd.read_csv(config["paths"]["model_dataframe"])
+
+encoded_dataframe = encode_categories(model_dataframe, config)
+
 image_generator = ImageDataGenerator(
     rotation_range=10,
     width_shift_range=0.15,
@@ -24,7 +27,7 @@ image_generator = ImageDataGenerator(
     validation_split=0.2,
 )
 train_generator = image_generator.flow_from_dataframe(
-    dataframe=processed_subset,
+    dataframe=encoded_dataframe,
     x_col=config["model"]["paths"],
     y_col=config["model"]["target"],
     class_mode=config["model"]["class_mode"],
@@ -34,7 +37,7 @@ train_generator = image_generator.flow_from_dataframe(
     seed=config["model"]["random_seed"],
 )
 test_generator = image_generator.flow_from_dataframe(
-    dataframe=processed_subset,
+    dataframe=encoded_dataframe,
     x_col=config["model"]["paths"],
     y_col=config["model"]["target"],
     class_mode=config["model"]["class_mode"],

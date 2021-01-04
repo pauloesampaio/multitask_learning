@@ -1,0 +1,44 @@
+paths:
+  categories_path: "./data/Anno_fine/list_category_cloth.txt"
+  attributes_path: "./data/Anno_fine/list_attr_cloth.txt"
+
+  train_files_path: "./data/Anno_fine/train.txt"
+  train_categories_path: "./data/Anno_fine/train_cate.txt"
+  train_attributes_path: "./data/Anno_fine/train_attr.txt"
+  train_bboxes_path: "./data/Anno_fine/train_bbox.txt"
+
+  test_files_path: "./data/Anno_fine/test.txt"
+  test_categories_path: "./data/Anno_fine/test_cate.txt"
+  test_attributes_path: "./data/Anno_fine/test_attr.txt"
+  test_bboxes_path: "./data/Anno_fine/test_bbox.txt"
+
+  val_files_path: "./data/Anno_fine/val.txt"
+  val_categories_path: "./data/Anno_fine/val_cate.txt"
+  val_attributes_path: "./data/Anno_fine/val_attr.txt"
+  val_bboxes_path: "./data/Anno_fine/val_bbox.txt"
+
+  full_dataset_path: "./data/full_dataset.parquet"
+  model_subset_path: "./data/model_subset.parquet"
+  processed_subset_path: "./data/processed_subset.csv"
+
+  data_folder_prefix: "./data"
+  cropped_folder: "./data/img_crop"
+
+categories:
+  aggregation:
+    Dresses: ["Dress", "Kaftan", "Robe"]
+    Tops:
+      [
+        "Sweater",
+        "Blouse",
+        "Tee",
+        "Top",
+        "Tank",
+        "Henley",
+        "Jersey",
+        "Turtleneck",
+      ]
+    Shirts: ["Button-Down", "Flannel"]
+    Jumpsuits: ["Jumpsuit", "Romper", "Onesie"]
+    Coats: ["Blazer", "Jacket", "Coat", "Hoodie", "Anorak", "Peacoat", "Bomber"]
+  to_model: ["Dresses", "Tops"]

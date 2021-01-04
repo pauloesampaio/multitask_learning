@@ -5,9 +5,8 @@ from utils.dataset_utils import (
     process_images,
 )
 from utils.io_utils import txt_loader, yaml_loader
-from tensorflow.keras.utils import to_categorical
 
-config = yaml_loader("./config/config.yml")
+config = yaml_loader("./config/dataset_config.yml")
 category_list = split_list(txt_loader(config["paths"]["categories_path"], skip_lines=2))
 category_dict = {w[0]: int(w[1]) for w in category_list}
 attribute_list = split_list(
@@ -30,14 +29,6 @@ full_dataset["file"] = [
     f'{config["paths"]["data_folder_prefix"]}/{w}' for w in full_dataset["file"]
 ]
 
-for k in config["model"]["target_encoder"].keys():
-    n_classes = len(config["model"]["target_encoder"][k])
-    encoder = dict(zip(config["model"]["target_encoder"][k], range(n_classes)))
-    full_dataset[f"{k}_encoded"] = to_categorical(
-        full_dataset[f"{k}"].map(encoder), num_classes=n_classes
-    ).tolist()
-
-
 full_dataset.to_parquet(config["paths"]["full_dataset_path"], index=False)
 
 category_translator = {}
@@ -46,11 +37,11 @@ for k in config["categories"]["aggregation"].keys():
         category_translator[v] = k
 full_dataset["top_level_category"] = full_dataset["category"].map(category_translator)
 model_subset = full_dataset.loc[
-    full_dataset["top_level_category"].isin(config["categories"]["to_model"]),
-    ["file", "top_level_category", "category", "bbox"] + config["model"]["target"],
+    full_dataset["top_level_category"].isin(config["categories"]["to_model"]), :
 ].reset_index(drop=True)
 model_subset.to_parquet(config["paths"]["model_subset_path"], index=False)
 
 processed_subset = process_images(model_subset, config["paths"]["cropped_folder"])
 processed_subset = processed_subset.dropna(subset=["processed_path"])
-processed_subset.to_parquet(config["paths"]["processed_subset_path"], index=False)
+processed_subset = processed_subset.drop(columns=["bbox"])
+processed_subset.to_csv(config["paths"]["processed_subset_path"], index=False)

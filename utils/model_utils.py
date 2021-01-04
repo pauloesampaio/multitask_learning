@@ -1,4 +1,5 @@
 import numpy as np
+from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras.models import Model
 from tensorflow.keras.applications.xception import Xception, preprocess_input
@@ -26,6 +27,16 @@ def build_model(config):
         )
     model = Model(inputs=i, outputs=outputs)
     return model
+
+
+def encode_categories(dataframe, config):
+    for k in config["model"]["target_encoder"].keys():
+        n_classes = len(config["model"]["target_encoder"][k])
+        encoder = dict(zip(config["model"]["target_encoder"][k], range(n_classes)))
+        dataframe[f"{k}_encoded"] = to_categorical(
+            dataframe[f"{k}"].map(encoder), num_classes=n_classes
+        ).tolist()
+    return dataframe
 
 
 def predict(model, image, config):
