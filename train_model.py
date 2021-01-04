@@ -65,7 +65,7 @@ LR_reducer = ReduceLROnPlateau(
     verbose=2,
 )
 
-training_history_path = config["model"]["training_history_path"]
+training_history_path = config["paths"]["training_history_path"]
 check_if_exists(os.path.dirname(training_history_path), create=True)
 csv_logger = CSVLogger(training_history_path)
 
