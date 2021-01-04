@@ -40,13 +40,14 @@ def encode_categories(dataframe, config):
 
 
 def predict(model, image, config):
-    model_input = np.array(image.resize((224, 224))).reshape(1, 224, 224, 3)
+    input_shape = config["model"]["input_shape"]
+    model_input = np.array(image.resize(input_shape))
+    model_input = model_input.reshape([1] + input_shape + [3])
     prediction = model.predict(model_input)
     prediction_dictionary = {}
+
     for i, encoder in enumerate(config["model"]["target_encoder"].keys()):
-        label = config["model"]["target_encoder"][encoder][np.argmax(prediction[i])]
-        probability = np.max(prediction[i])
-        prediction_dictionary[encoder] = {}
-        prediction_dictionary[encoder]["label"] = label
-        prediction_dictionary[encoder]["probability"] = probability
+        labels = config["model"]["target_encoder"][encoder]
+        probabilities = prediction[i][0]
+        prediction_dictionary[encoder] = dict(zip(labels, probabilities))
     return prediction_dictionary
