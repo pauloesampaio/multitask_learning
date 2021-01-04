@@ -5,7 +5,7 @@ import tensorflow as tf
 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau, CSVLogger
 from utils.model_utils import build_model
 from utils.io_utils import yaml_loader, check_if_exists
 
@@ -62,17 +62,16 @@ LR_reducer = ReduceLROnPlateau(
     verbose=2,
 )
 
+csv_logger = CSVLogger(config["model"]["training_history_path"])
+
 model.fit(
     x=train_generator,
     validation_data=test_generator,
     epochs=100,
-    callbacks=[early_stopping, LR_reducer],
+    callbacks=[early_stopping, LR_reducer, csv_logger],
 )
 
 model_path = config["paths"]["model_path"]
 check_if_exists(os.path.dirname(model_path), create=True)
 model.save(model_path)
 print(f"Model saved to {model_path}")
-pd.DataFrame(model.history.history).to_csv(
-    config["model"]["training_history_path"], index=False
-)
