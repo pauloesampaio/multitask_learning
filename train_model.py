@@ -65,7 +65,9 @@ LR_reducer = ReduceLROnPlateau(
     verbose=2,
 )
 
-csv_logger = CSVLogger(config["model"]["training_history_path"])
+training_history_path = config["model"]["training_history_path"]
+check_if_exists(os.path.dirname(training_history_path), create=True)
+csv_logger = CSVLogger(training_history_path)
 
 model.fit(
     x=train_generator,
@@ -75,6 +77,5 @@ model.fit(
 )
 
 model_path = config["paths"]["model_path"]
-check_if_exists(os.path.dirname(model_path), create=True)
 model.save(model_path)
 print(f"Model saved to {model_path}")
