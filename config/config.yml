@@ -26,6 +26,7 @@ paths:
   cropped_folder: "./data/img_crop"
 
   model_path: "./model/model.h5"
+  training_history_path: "./model/training_history.csv"
 
 categories:
   aggregation:

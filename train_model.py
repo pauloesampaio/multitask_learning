@@ -73,3 +73,6 @@ model_path = config["paths"]["model_path"]
 check_if_exists(os.path.dirname(model_path), create=True)
 model.save(model_path)
 print(f"Model saved to {model_path}")
+pd.DataFrame(model.history.history).to_csv(
+    config["model"]["training_history_path"], index=False
+)
