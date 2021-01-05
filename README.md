@@ -1,6 +1,12 @@
 # Multitask convolutional neural networks
 
-I honestly think that a lot of times we are underusing our models. Specially convolutional neural networks. Imagenet pre-trained models have amazing architectures and are super powerful - trained to classify images into 1000 categories. We get them and fine tune them to solve our - almost always way simpler - specific classification task, for instance detect sleeve lengths in garments. Then when we have another task, necklines in garments for instance, we train yet a new specific single task model, and so forth and so on. Having all these task specific models slow down pipeline and consume precious/expensive GPU time. What if we train a model to perform all these multiple classification tasks in one go? That's what I'm calling multitask learning.
+I honestly think that a lot of times we are underusing our models. Specially convolutional neural networks. Imagenet pre-trained models have amazing architectures and are super powerful - trained to classify images into 1000 categories. We get them and fine tune them to solve our - almost always way simpler - specific classification task, for instance detect sleeve lengths in garments. Then when we have another task, necklines in garments for instance, we train yet a new specific single task model, and so forth and so on. Having all these task specific models slow down pipeline and consume precious/expensive GPU time. What if we train a model to perform all these multiple classification tasks in one go? That's what I'm calling multitask learning. The idea is to have something like this:
+
+<figure style="width: 50%"  class="align-center">
+<img src="https://paulo-blog-media.s3-sa-east-1.amazonaws.com/posts/2020-12-31-multitask_learning/app.jpg" alt="">
+<figcaption>Dress classified as striped, long sleeves and v-neck, 3 classification instead of just 1!</figcaption>
+</figure>
+
 
 [Here's me talking about it back](https://www.youtube.com/watch?v=p7Oi6HX27Rs&t=12s) in 2017 at PyCon-UK
 
