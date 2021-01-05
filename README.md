@@ -65,6 +65,7 @@ That's basically it!
 
 
 <img src="https://paulo-blog-media.s3-sa-east-1.amazonaws.com/posts/2020-12-31-multitask_learning/app.jpg" alt="" width=460>
+
 *Dress classified as striped, long sleeves and v-neck!*
 
 
