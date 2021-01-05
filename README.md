@@ -2,11 +2,9 @@
 
 I honestly think that a lot of times we are underusing our models. Specially convolutional neural networks. Imagenet pre-trained models have amazing architectures and are super powerful - trained to classify images into 1000 categories. We get them and fine tune them to solve our - almost always way simpler - specific classification task, for instance detect sleeve lengths in garments. Then when we have another task, necklines in garments for instance, we train yet a new specific single task model, and so forth and so on. Having all these task specific models slow down pipeline and consume precious/expensive GPU time. What if we train a model to perform all these multiple classification tasks in one go? That's what I'm calling multitask learning. The idea is to have something like this:
 
-<figure style="width: 50%"  class="align-center">
-<img src="https://paulo-blog-media.s3-sa-east-1.amazonaws.com/posts/2020-12-31-multitask_learning/app.jpg" alt="">
-<figcaption>Dress classified as striped, long sleeves and v-neck, 3 classification instead of just 1!</figcaption>
-</figure>
+<img src="https://paulo-blog-media.s3-sa-east-1.amazonaws.com/posts/2020-12-31-multitask_learning/app.jpg" alt="" width=460>
 
+*Dress classified as striped, long sleeves and v-neck, 3 classification instead of just 1!*
 
 [Here's me talking about it back](https://www.youtube.com/watch?v=p7Oi6HX27Rs&t=12s) in 2017 at PyCon-UK
 
@@ -20,29 +18,24 @@ In my experience, using good pre-trained architectures, plugging multiple classi
 - With model: binary task, if the picture contains a human model or not
 - Color: multi-class task, classifying main dominant color into a set of 21 possible colors
 
-In terms of accuracy, the results running as single tasks or multi task, as can be seen below:
+In terms of accuracy, the results running as single tasks or multi task are similar, as can be seen below:
 
-<figure style="width: 50%"  class="align-center">
-<img src="https://paulo-blog-media.s3-sa-east-1.amazonaws.com/posts/2020-12-31-multitask_learning/accuracy.jpg" alt="">
-<figcaption>Similar accuracy levels</figcaption>
-</figure>
+<img src="https://paulo-blog-media.s3-sa-east-1.amazonaws.com/posts/2020-12-31-multitask_learning/accuracy.jpg" alt="" width=460>
 
 The magic is in terms of processing time. As one could expect, running these in a multitask network is 3 times faster than running them as single task. Basically n times faster, where n is the number of tasks.
 
-<figure style="width: 50%"  class="align-center">
-<img src="https://paulo-blog-media.s3-sa-east-1.amazonaws.com/posts/2020-12-31-multitask_learning/processing_time.jpg" alt="">
-</figure>
+<img src="https://paulo-blog-media.s3-sa-east-1.amazonaws.com/posts/2020-12-31-multitask_learning/processing_time.jpg" alt="" width=460>
 
 As a nice side effect, training all layers end up generating better embeddings, since the feature vector now takes into account all tasks, generating a more holistic representation of the image. I'll dive a bit deeper in this matter in a future post.
 
 ## How to run it
 
-You need to provide a dataframe like the following:
+You need to provide a dataframe like the following, having a column with path to the image and labels for each classification task:
 
-<figure style="width: 75%"  class="align-center">
-<img src="https://paulo-blog-media.s3-sa-east-1.amazonaws.com/posts/2020-12-31-multitask_learning/csv.png" alt="">
-<figcaption>Dataframe with path to image and labels for each classification task</figcaption>
-</figure>
+<img src="https://paulo-blog-media.s3-sa-east-1.amazonaws.com/posts/2020-12-31-multitask_learning/csv.png" alt="" width=460>
+
+*Dataframe with path to image and labels for each classification task*
+
 
 Where we have the path for the images and the label for each one of the tasks.
 
@@ -70,10 +63,10 @@ That's basically it!
 
 [Streamlit] is the best tool to quickly build an app to test our model. Running `streamlit run front_end.py` will start a webserver on your `localhost:8501` where you can paste an image url and check the model prediction, like on the screenshot below:
 
-<figure style="width: 75%"  class="align-center">
-<img src="https://paulo-blog-media.s3-sa-east-1.amazonaws.com/posts/2020-12-31-multitask_learning/app.jpg" alt="">
-<figcaption>Dress classified as striped, long sleeves and v-neck!</figcaption>
-</figure>
+
+<img src="https://paulo-blog-media.s3-sa-east-1.amazonaws.com/posts/2020-12-31-multitask_learning/app.jpg" alt="" width=460>
+*Dress classified as striped, long sleeves and v-neck!*
+
 
 ## If you want to run an example
 
