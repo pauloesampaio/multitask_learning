@@ -6,6 +6,15 @@ from tensorflow.keras.applications.xception import Xception, preprocess_input
 
 
 def build_model(config):
+    """Builds a keras model using Xception network as core and following
+    instructions on the configuration file.
+
+    Args:
+        config (dict): Configuration dictionary
+
+    Returns:
+        keras.model: Keras model
+    """
     input_shape = config["model"]["input_shape"] + [3]
     i = Input(
         input_shape,
@@ -30,6 +39,16 @@ def build_model(config):
 
 
 def encode_categories(dataframe, config):
+    """Function to one-hot-encode labels according to encoding map
+    defined on the config file
+
+    Args:
+        dataframe (pd.DataFrame): Dataframe with actual labels
+        config (dict): Configuration dictionary with encoding map
+
+    Returns:
+        pd.DataFrame: Dataframe with one-hot-encoded labels
+    """
     for k in config["model"]["target_encoder"].keys():
         n_classes = len(config["model"]["target_encoder"][k])
         encoder = dict(zip(config["model"]["target_encoder"][k], range(n_classes)))
@@ -40,6 +59,17 @@ def encode_categories(dataframe, config):
 
 
 def predict(model, image, config):
+    """Prediction function, to not only predict but also to decode
+    prediction into human friendly labels
+
+    Args:
+        model (keras.Model): Trained keras model
+        image (PIL.Image): Image in PIL format
+        config (dict): Configuration dictionary with key to decode predictions
+
+    Returns:
+        dict: Dictionary with predictions and probabilities
+    """
     input_shape = config["model"]["input_shape"]
     model_input = np.array(image.resize(input_shape))
     model_input = model_input.reshape([1] + input_shape + [3])

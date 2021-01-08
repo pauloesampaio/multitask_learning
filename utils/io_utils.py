@@ -7,6 +7,15 @@ from PIL import Image
 
 
 def txt_loader(path, skip_lines=0):
+    """Loads txt from a path
+
+    Args:
+        path (str): path to txt file
+        skip_lines (int, optional): Number of lines to skip. Defaults to 0.
+
+    Returns:
+        [list]: List with the content of the txt file, one line per row
+    """
     with open(path, "r") as f:
         content = f.read().splitlines()
     return content[skip_lines:]
